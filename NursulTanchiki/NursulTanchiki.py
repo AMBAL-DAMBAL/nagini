@@ -18,8 +18,6 @@ class Player(pg.sprite.Sprite):
         self.key_up = up
         self.key_down = down
         self.key_fire = fire
-        # Store the groups as attributes, so that you can add bullets
-        # and use them for the collision detection in the update method.
         self.all_sprites = all_sprites
         self.bullets = bullets
         self.enemy_bullets = enemy_bullets
@@ -31,8 +29,6 @@ class Player(pg.sprite.Sprite):
         self.pos += self.vel
         self.rect.center = self.pos
 
-        # Check if enemy bullets collide with the player, reduce
-        # health and kill self if health is <= 0.
         collided_bullets = pg.sprite.spritecollide(self, self.enemy_bullets, True)
         for bullet in collided_bullets:
             self.health -= 1
@@ -53,7 +49,7 @@ class Player(pg.sprite.Sprite):
             elif event.key == self.key_down:
                 self.vel.y = 90 * self.dt
                 self.fire_direction = Vector2(0, 350)
-            elif event.key == self.key_fire:  # Add a bullet to the groups.
+            elif event.key == self.key_fire:   
                 bullet = Bullet(self.rect.center, self.fire_direction)
                 self.bullets.add(bullet)
                 self.all_sprites.add(bullet)
@@ -92,18 +88,18 @@ class Game:
         self.screen = pg.display.set_mode((800, 600))
         self.bg_color = pg.Color('gray30')
 
-        # Sprite groups that contain the players and bullets.
+         
         self.all_sprites = pg.sprite.Group()
-        self.bullets1 = pg.sprite.Group()  # Will contain bullets of player1.
-        self.bullets2 = pg.sprite.Group()  # Will contain bullets of player2.
+        self.bullets1 = pg.sprite.Group()    
+        self.bullets2 = pg.sprite.Group()   
         player1 = Player(
             (100, 300), pg.Color('dodgerblue2'),
             pg.K_a, pg.K_d, pg.K_w, pg.K_s, pg.K_f,
-            self.all_sprites, self.bullets1, self.bullets2)  # Pass the groups.
+            self.all_sprites, self.bullets1, self.bullets2)   
         player2 = Player(
             (300, 400),  pg.Color('sienna2'),
             pg.K_LEFT, pg.K_RIGHT, pg.K_UP, pg.K_DOWN, pg.K_SPACE,
-            self.all_sprites, self.bullets2, self.bullets1)  # Pass the groups.
+            self.all_sprites, self.bullets2, self.bullets1)   
         self.all_sprites.add(player1, player2)
         self.players = pg.sprite.Group(player1, player2)
 
